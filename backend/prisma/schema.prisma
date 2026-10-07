@@ -1,0 +1,211 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  MEMBER
+  ADMIN
+}
+
+enum ClassCategory {
+  Strength
+  Cardio
+  Functional
+  Mobility
+}
+
+enum ClassIntensity {
+  Low
+  Medium
+  High
+}
+
+enum Day {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
+enum EnquiryInterestType {
+  general
+  program
+  membership
+  class
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  TRIALING
+}
+
+enum BillingCycle {
+  monthly
+  quarterly
+  annual
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  passwordHash String
+  name         String?
+  phone        String?
+  role         Role           @default(MEMBER)
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  RefreshToken RefreshToken[]
+  PasswordResetToken PasswordResetToken[]
+  Subscription Subscription[]
+  favorites    Favorite[]
+  enquiries    Enquiry[]
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  expiresAt DateTime
+  revokedAt DateTime?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model MembershipPlan {
+  id                     String         @id
+  name                   String
+  description            String
+  prices                 Json
+  inclusions             Json
+  highlight              Boolean        @default(false)
+  isActive               Boolean        @default(true)
+  stripePriceIdMonthly   String?
+  stripePriceIdQuarterly String?
+  stripePriceIdAnnual    String?
+  subscriptions          Subscription[]
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String
+  planId               String
+  stripeSubscriptionId String             @unique
+  stripeCustomerId     String
+  status               SubscriptionStatus
+  billingCycle         BillingCycle
+  currentPeriodEnd     DateTime
+  user                 User               @relation(fields: [userId], references: [id])
+  plan                 MembershipPlan     @relation(fields: [planId], references: [id])
+}
+
+model Program {
+  id              String           @id @default(cuid())
+  slug            String           @unique
+  title           String
+  category        String
+  description     String
+  intensity       String
+  experienceLevel String
+  duration        String
+  imageUrl        String
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  trainers        TrainerProgram[]
+}
+
+model Trainer {
+  id        String           @id @default(cuid())
+  name      String
+  specialty String
+  bio       String
+  imageUrl  String
+  isActive  Boolean          @default(true)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  programs  TrainerProgram[]
+  classes   ScheduleClass[]
+}
+
+model TrainerProgram {
+  trainerId String
+  programId String
+  trainer   Trainer @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  program   Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@id([trainerId, programId])
+}
+
+model ScheduleClass {
+  id           String         @id @default(cuid())
+  title        String
+  day          Day
+  startTime    String
+  durationMins Int
+  trainerId    String
+  category     ClassCategory
+  intensity    ClassIntensity
+  trainer      Trainer        @relation(fields: [trainerId], references: [id])
+}
+
+model GalleryImage {
+  id        String  @id @default(cuid())
+  src       String
+  alt       String
+  category  String
+  caption   String?
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+}
+
+model Enquiry {
+  id            String              @id @default(cuid())
+  userId        String?
+  name          String
+  email         String
+  phone         String?
+  interestType  EnquiryInterestType
+  interestRefId String?
+  message       String
+  createdAt     DateTime            @default(now())
+  handledAt     DateTime?
+  user          User?               @relation(fields: [userId], references: [id])
+}
+
+model PaymentEvent {
+  id            String   @id @default(cuid())
+  stripeEventId String   @unique
+  type          String
+  payload       Json
+  processedAt   DateTime @default(now())
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  itemType  String   // 'program' | 'class'
+  itemId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, itemType, itemId])
+}

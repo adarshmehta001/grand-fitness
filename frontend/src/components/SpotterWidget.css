@@ -1,0 +1,185 @@
+.spotter-widget {
+  position: fixed;
+  bottom: var(--space-5);
+  right: var(--space-5);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .spotter-widget {
+    bottom: var(--space-6);
+    right: var(--space-6);
+  }
+}
+
+.spotter-trigger {
+  pointer-events: auto;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent-primary);
+  color: var(--color-text-inverse);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+  margin-top: 1rem;
+}
+
+.spotter-trigger:hover, .spotter-trigger:focus-visible {
+  background-color: var(--color-accent-hover);
+  transform: scale(1.05);
+}
+
+.spotter-trigger.is-open {
+  background-color: var(--color-bg-surface-elevated);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.spotter-panel {
+  pointer-events: auto;
+  width: calc(100vw - 2 * var(--space-5));
+  max-width: 360px;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: spotter-slide-up var(--transition-fast) forwards;
+  transform-origin: bottom right;
+}
+
+@keyframes spotter-slide-up {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotter-panel {
+    animation: none;
+  }
+}
+
+.spotter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg-surface-elevated);
+}
+
+.spotter-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.spotter-close {
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.spotter-close:hover, .spotter-close:focus-visible {
+  color: var(--color-text-primary);
+  background-color: var(--color-border);
+}
+
+.spotter-body {
+  padding: var(--space-4);
+  max-height: 50vh;
+  min-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.spotter-greeting {
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+}
+
+.spotter-questions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.spotter-question-btn {
+  text-align: left;
+  padding: var(--space-3);
+  background-color: var(--color-bg-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.spotter-question-btn:hover, .spotter-question-btn:focus-visible {
+  border-color: var(--color-accent-primary);
+  background-color: rgba(212, 255, 0, 0.05);
+}
+
+.spotter-answer-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.spotter-question-bubble {
+  align-self: flex-end;
+  background-color: var(--color-accent-primary);
+  color: var(--color-text-inverse);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md) var(--radius-md) 0 var(--radius-md);
+  font-size: 0.9rem;
+  max-width: 85%;
+}
+
+.spotter-answer-bubble {
+  align-self: flex-start;
+  background-color: var(--color-bg-surface-elevated);
+  padding: var(--space-3);
+  border-radius: var(--radius-md) var(--radius-md) var(--radius-md) 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  max-width: 90%;
+  border: 1px solid var(--color-border);
+}
+
+.spotter-answer-bubble p {
+  margin-bottom: 0;
+}
+
+.spotter-back-btn {
+  margin-top: auto;
+  align-self: center;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  padding: var(--space-2);
+  transition: color var(--transition-fast);
+}
+
+.spotter-back-btn:hover, .spotter-back-btn:focus-visible {
+  color: var(--color-text-primary);
+}

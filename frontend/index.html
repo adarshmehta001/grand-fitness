@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="The Grand Fitness — premium performance training gym in Gayaji. Strength, cardio, functional fitness and personal training." />
+    <title>The Grand Fitness | Premium Gym, Gayaji</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <style>
+      /* Inline critical CSS to prevent FOUC on the skip link */
+      .skip-link {
+        position: absolute;
+        top: -100%;
+        left: 1rem;
+        background-color: #E2FF31; /* var(--color-accent-primary) */
+        color: #121212; /* var(--color-text-inverse) */
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        z-index: 999;
+        transition: top 0.2s ease;
+      }
+      .skip-link:focus {
+        top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

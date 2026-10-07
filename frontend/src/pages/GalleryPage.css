@@ -1,0 +1,122 @@
+.gallery-hero { background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border); }
+
+.gallery-intro {
+  max-width: 540px;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.gallery-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.facility-desc-box {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin-bottom: var(--space-8);
+}
+
+.facility-desc-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.facility-desc-box p {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.gallery-grid {
+  columns: 1;
+  gap: var(--space-3);
+}
+
+@media (min-width: 640px) {
+  .gallery-grid { columns: 2; }
+}
+
+@media (min-width: 1024px) {
+  .gallery-grid { columns: 3; }
+}
+
+.gallery-item {
+  display: block;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  margin-bottom: var(--space-3);
+  break-inside: avoid;
+  transition: border-color var(--transition-normal);
+}
+
+.gallery-item:hover {
+  border-color: #555;
+}
+
+.gallery-item:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
+.gallery-item-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 400ms ease;
+}
+
+.gallery-item:hover .gallery-item-img {
+  transform: scale(1.03);
+}
+
+.gallery-item-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(10,10,10,0.9), transparent);
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  padding: var(--space-4) var(--space-3) var(--space-3);
+  transform: translateY(100%);
+  transition: transform var(--transition-normal);
+}
+
+.gallery-item:hover .gallery-item-caption,
+.gallery-item:focus-visible .gallery-item-caption {
+  transform: translateY(0);
+}
+
+.gallery-empty {
+  padding: var(--space-12) 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
